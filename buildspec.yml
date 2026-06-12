@@ -13,7 +13,11 @@ phases:
   build:
     commands:
       - echo Build iniciado em `date`
-      - echo Construindo a imagem Docker...          
+      - echo Compilando a aplicacao .NET Core diretamente no CodeBuild...
+      # 👇 REQUISITO: O CodeBuild agora compila o projeto e joga na pasta 'out'
+      - dotnet publish "MeuSite.csproj" -c Release -o ./out
+      
+      - echo Construindo a imagem Docker com o binario compilado...          
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
