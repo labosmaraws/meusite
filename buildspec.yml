@@ -3,6 +3,8 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      # 👇 ESSA LINHA PRECISA VOLTAR (Ela descobre o número da sua conta AWS)
+      - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
       - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
   build:
